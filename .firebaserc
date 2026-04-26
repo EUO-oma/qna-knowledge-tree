@@ -1,5 +1,15 @@
 {
   "projects": {
-    "default": "YOUR_FIREBASE_PROJECT_ID"
-  }
+    "default": "euo-oma-blog"
+  },
+  "targets": {
+    "euo-oma-blog": {
+      "hosting": {
+        "qna": [
+          "qna-knowledge-tree-euo"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

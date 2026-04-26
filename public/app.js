@@ -1,7 +1,7 @@
-import { initFirebase } from "../src/firebase.js";
-import { createNode, getNodes } from "../src/nodes.service.js";
-import { renderTree } from "../src/tree.render.js";
-import { bindDetailPanel } from "../src/ui.detail.js";
+import { initFirebase } from "./src/firebase.js";
+import { createNode, getNodes } from "./src/nodes.service.js";
+import { renderTree } from "./src/tree.render.js";
+import { bindDetailPanel } from "./src/ui.detail.js";
 
 let allNodes = [];
 let selectedNodeId = null;
