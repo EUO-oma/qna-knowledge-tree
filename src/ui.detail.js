@@ -1,25 +1,28 @@
 import { deleteNodeWithDescendants, updateNode } from "./nodes.service.js";
 
-export function bindDetailPanel({ node, allNodes, onChanged }) {
+export function bindDetailPanel({ node, allNodes, onChanged, canEdit = false }) {
   const panel = document.getElementById("detailPanel");
   const tagsText = (node.tags || []).join(", ");
 
   panel.innerHTML = `
     <div style="display:grid; gap:8px;">
-      <label>제목 <input id="detailTitle" value="${escapeHtml(node.title || "")}" /></label>
+      <label>제목 <input id="detailTitle" value="${escapeHtml(node.title || "")}" ${canEdit ? "" : "disabled"} /></label>
       <label>타입
-        <select id="detailType">
+        <select id="detailType" ${canEdit ? "" : "disabled"}>
           ${["question", "answer", "law", "link"].map((t) => `<option value="${t}" ${node.type === t ? "selected" : ""}>${t}</option>`).join("")}
         </select>
       </label>
-      <label>내용 <textarea id="detailContent" rows="6">${escapeHtml(node.content || "")}</textarea></label>
-      <label>태그(콤마) <input id="detailTags" value="${escapeHtml(tagsText)}" /></label>
+      <label>내용 <textarea id="detailContent" rows="6" ${canEdit ? "" : "disabled"}>${escapeHtml(node.content || "")}</textarea></label>
+      <label>태그(콤마) <input id="detailTags" value="${escapeHtml(tagsText)}" ${canEdit ? "" : "disabled"} /></label>
+      ${canEdit ? `
       <div style="display:flex; gap:6px;">
         <button id="saveNodeBtn">저장</button>
         <button id="deleteNodeBtn">삭제(하위 포함)</button>
-      </div>
+      </div>` : '<p class="muted">읽기 전용 모드 (owner 로그인 필요)</p>'}
     </div>
   `;
+
+  if (!canEdit) return;
 
   document.getElementById("saveNodeBtn").onclick = async () => {
     const title = document.getElementById("detailTitle").value.trim();

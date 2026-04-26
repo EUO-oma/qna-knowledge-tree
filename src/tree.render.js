@@ -1,6 +1,6 @@
 import { getChildren } from "./nodes.service.js";
 
-export function renderTree({ container, nodes, onSelect, onAddChild }) {
+export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = false }) {
   container.innerHTML = "";
 
   const roots = getChildren(nodes, null);
@@ -40,12 +40,13 @@ export function renderTree({ container, nodes, onSelect, onAddChild }) {
     const actions = document.createElement("div");
     actions.className = "node-actions";
 
-    const addBtn = document.createElement("button");
-    addBtn.textContent = "+";
-    addBtn.title = "하위 노드 추가";
-    addBtn.onclick = () => onAddChild(node);
-
-    actions.appendChild(addBtn);
+    if (canEdit) {
+      const addBtn = document.createElement("button");
+      addBtn.textContent = "+";
+      addBtn.title = "하위 노드 추가";
+      addBtn.onclick = () => onAddChild(node);
+      actions.appendChild(addBtn);
+    }
     row.appendChild(titleBtn);
     row.appendChild(typeBadge);
     row.appendChild(actions);

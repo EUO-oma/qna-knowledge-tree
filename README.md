@@ -25,8 +25,10 @@ firebase deploy --only firestore:rules,hosting
 ```
 
 ## 현재 구현 범위(v1)
+- Google 로그인/로그아웃
+- owner(`icandoit13579@gmail.com`)만 쓰기/수정/삭제 가능
 - 루트/하위 노드 생성 (question/answer/law/link)
 - 트리 렌더링(재귀)
 - 노드 상세 수정
 - 노드 삭제(하위 포함)
-- 태그 검색
+- 제목/내용/태그 통합 검색

@@ -3,10 +3,14 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-
 .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; min-height: 100vh; }
 .panel { border: 1px solid #2a3556; border-radius: 12px; background: #121a31; overflow: hidden; }
 .panel-header { display:flex; gap:8px; align-items:center; padding:10px; border-bottom:1px solid #2a3556; }
+.panel-header.wrap { flex-wrap: wrap; }
 .panel-header h1, .panel-header h2 { margin:0; font-size: 16px; }
 input, button, select, textarea { background:#0f1630; color:#e6eaf2; border:1px solid #32406a; border-radius:8px; padding:8px; }
 button { cursor:pointer; }
 #treeContainer, #detailPanel { padding: 10px; }
+.composer { margin: 10px; padding: 10px; border:1px solid #2a3556; border-radius: 10px; display:grid; gap:8px; }
+.composer h3 { margin:0; font-size:14px; }
+.composer-actions { display:flex; gap:8px; }
 .tree-level { list-style:none; margin: 6px 0 0; padding-left: 0; }
 .tree-item { display:flex; align-items:center; gap:6px; margin-bottom:6px; }
 .node-btn { flex:1; text-align:left; }
