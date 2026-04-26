@@ -5,16 +5,25 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-
 .panel-header { display:flex; gap:8px; align-items:center; padding:10px; border-bottom:1px solid #2a3556; }
 .panel-header.wrap { flex-wrap: wrap; }
 .panel-header h1, .panel-header h2 { margin:0; font-size: 16px; }
-input, button, select, textarea { background:#0f1630; color:#e6eaf2; border:1px solid #32406a; border-radius:8px; padding:8px; }
+input, button, select, textarea { background:#0f1630; color:#e6eaf2; border:1px solid #32406a; border-radius:8px; padding:10px; min-height:44px; }
 button { cursor:pointer; }
 #treeContainer, #detailPanel { padding: 10px; }
 .composer { margin: 10px; padding: 10px; border:1px solid #2a3556; border-radius: 10px; display:grid; gap:8px; }
 .composer h3 { margin:0; font-size:14px; }
 .composer-actions { display:flex; gap:8px; }
 .tree-level { list-style:none; margin: 6px 0 0; padding-left: 0; }
-.tree-item { display:flex; align-items:center; gap:6px; margin-bottom:6px; }
-.node-btn { flex:1; text-align:left; }
+.tree-item { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.node-btn { flex:1; text-align:left; min-height:44px; }
 .node-type { font-size: 11px; opacity: .8; }
 .node-actions { display:flex; gap:4px; }
 .muted { opacity:.75; font-size:12px; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.mobile-tabs { display:none; position: sticky; top: 0; z-index: 30; background:#0b1020; padding:10px; gap:8px; border-bottom:1px solid #2a3556; }
+.mobile-tabs button { flex:1; }
+.mobile-tabs button.active { border-color:#5f7cff; box-shadow:0 0 0 1px #5f7cff inset; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding-top: 8px; }
+  .mobile-tabs { display:flex; }
+  .layout.show-detail #leftPanel { display:none; }
+  .layout.show-tree #rightPanel { display:none; }
+}

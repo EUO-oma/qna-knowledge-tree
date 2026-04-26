@@ -7,8 +7,12 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <div class="mobile-tabs" id="mobileTabs">
+    <button id="mobileTreeTab" class="active">트리</button>
+    <button id="mobileDetailTab">상세</button>
+  </div>
   <main class="layout">
-    <section class="left panel">
+    <section class="left panel" id="leftPanel">
       <header class="panel-header wrap">
         <h1>Knowledge Tree</h1>
         <input id="tagSearchInput" placeholder="태그 검색" />
@@ -36,7 +40,7 @@
       <div id="treeContainer"></div>
     </section>
 
-    <section class="right panel">
+    <section class="right panel" id="rightPanel">
       <header class="panel-header"><h2>노드 상세</h2></header>
       <div id="detailPanel">노드를 선택하세요.</div>
     </section>

@@ -10,6 +10,23 @@ let currentUser = null;
 let isOwner = false;
 let composerParentId = null;
 
+function isMobile() {
+  return window.matchMedia("(max-width: 900px)").matches;
+}
+
+function setMobileView(mode) {
+  const layout = document.querySelector(".layout");
+  const treeTab = document.getElementById("mobileTreeTab");
+  const detailTab = document.getElementById("mobileDetailTab");
+  if (!layout || !treeTab || !detailTab) return;
+
+  layout.classList.remove("show-tree", "show-detail");
+  layout.classList.add(mode === "detail" ? "show-detail" : "show-tree");
+
+  treeTab.classList.toggle("active", mode === "tree");
+  detailTab.classList.toggle("active", mode === "detail");
+}
+
 function parseTags(input) {
   return String(input || "")
     .split(",")
@@ -37,6 +54,7 @@ function openComposer(parentNode = null) {
     : "대상: 루트";
   setComposerVisible(true);
   document.getElementById("nodeTitleInput").focus();
+  if (isMobile()) setMobileView("tree");
 }
 
 async function refreshTree() {
@@ -66,6 +84,7 @@ async function refreshTree() {
         canEdit: isOwner,
         onChanged: refreshTree,
       });
+      if (isMobile()) setMobileView("detail");
     },
     async onAddChild(parent) {
       if (!isOwner) return;
@@ -161,6 +180,10 @@ async function bootstrap() {
 
   bindAuthUi();
   bindComposerUi();
+
+  document.getElementById("mobileTreeTab").addEventListener("click", () => setMobileView("tree"));
+  document.getElementById("mobileDetailTab").addEventListener("click", () => setMobileView("detail"));
+  if (isMobile()) setMobileView("tree");
 
   document.getElementById("tagSearchInput").addEventListener("input", async () => {
     await refreshTree();
