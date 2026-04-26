@@ -1,6 +1,6 @@
-import { deleteNode, updateNode } from "./nodes.service.js";
+import { deleteNodeWithDescendants, updateNode } from "./nodes.service.js";
 
-export function bindDetailPanel(node) {
+export function bindDetailPanel({ node, allNodes, onChanged }) {
   const panel = document.getElementById("detailPanel");
   const tagsText = (node.tags || []).join(", ");
 
@@ -16,13 +16,15 @@ export function bindDetailPanel(node) {
       <label>태그(콤마) <input id="detailTags" value="${escapeHtml(tagsText)}" /></label>
       <div style="display:flex; gap:6px;">
         <button id="saveNodeBtn">저장</button>
-        <button id="deleteNodeBtn">삭제</button>
+        <button id="deleteNodeBtn">삭제(하위 포함)</button>
       </div>
     </div>
   `;
 
   document.getElementById("saveNodeBtn").onclick = async () => {
     const title = document.getElementById("detailTitle").value.trim();
+    if (!title) return alert("제목은 필수야.");
+
     const type = document.getElementById("detailType").value;
     const content = document.getElementById("detailContent").value;
     const tags = document
@@ -34,14 +36,15 @@ export function bindDetailPanel(node) {
 
     await updateNode(node.id, { title, type, content, tags });
     alert("저장 완료");
-    location.reload();
+    await onChanged();
   };
 
   document.getElementById("deleteNodeBtn").onclick = async () => {
-    if (!confirm("이 노드를 삭제할까요?")) return;
-    await deleteNode(node.id);
+    if (!confirm("이 노드와 하위 노드를 모두 삭제할까요?")) return;
+    await deleteNodeWithDescendants(node.id, allNodes);
     alert("삭제 완료");
-    location.reload();
+    await onChanged();
+    panel.innerHTML = "노드를 선택하세요.";
   };
 }
 

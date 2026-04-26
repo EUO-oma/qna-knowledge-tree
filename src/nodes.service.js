@@ -45,3 +45,18 @@ export async function updateNode(nodeId, patch) {
 export async function deleteNode(nodeId) {
   await deleteDoc(doc(db, COL, nodeId));
 }
+
+export async function deleteNodeWithDescendants(nodeId, allNodes) {
+  const queue = [nodeId];
+  const idsToDelete = [];
+
+  while (queue.length) {
+    const currentId = queue.shift();
+    idsToDelete.push(currentId);
+
+    const children = allNodes.filter((n) => (n.parentId ?? null) === currentId);
+    for (const child of children) queue.push(child.id);
+  }
+
+  await Promise.all(idsToDelete.map((id) => deleteDoc(doc(db, COL, id))));
+}
