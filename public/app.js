@@ -11,6 +11,7 @@ let isOwner = false;
 let composerParentId = null;
 let selectedType = "all";
 const collapsedIds = new Set();
+let toastTimer = null;
 
 function isMobile() {
   return window.matchMedia("(max-width: 900px)").matches;
@@ -34,6 +35,18 @@ function parseTags(input) {
     .split(",")
     .map((v) => v.trim())
     .filter(Boolean);
+}
+
+function showToast(message, type = "ok", ms = 2400) {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = message;
+  el.className = `toast ${type}`;
+  el.hidden = false;
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.hidden = true;
+  }, ms);
 }
 
 function syncTypeChipUi() {
@@ -183,27 +196,32 @@ function bindComposerUi() {
     const content = document.getElementById("nodeContentInput").value;
     const tags = parseTags(document.getElementById("nodeTagsInput").value);
 
-    const parentId = composerParentId;
-    const createdRef = await createNode({
-      title,
-      type,
-      content,
-      tags,
-      parentId,
-    });
+    try {
+      const parentId = composerParentId;
+      const createdRef = await createNode({
+        title,
+        type,
+        content,
+        tags,
+        parentId,
+      });
 
-    if (parentId) collapsedIds.delete(parentId);
-    selectedNodeId = createdRef?.id || null;
+      if (parentId) collapsedIds.delete(parentId);
+      selectedNodeId = createdRef?.id || null;
 
-    if (selectedType !== "all" && selectedType !== type) {
-      selectedType = "all";
-      syncTypeChipUi();
+      if (selectedType !== "all" && selectedType !== type) {
+        selectedType = "all";
+        syncTypeChipUi();
+      }
+
+      setComposerVisible(false);
+      clearComposer();
+      await refreshTree();
+      if (isMobile()) setMobileView("detail");
+      showToast(parentId ? "하위 노드가 추가됐어." : "루트 노드가 추가됐어.", "ok");
+    } catch (e) {
+      showToast(`노드 저장 실패: ${e?.message || e}`, "error", 3600);
     }
-
-    setComposerVisible(false);
-    clearComposer();
-    await refreshTree();
-    if (isMobile()) setMobileView("detail");
   });
 }
 

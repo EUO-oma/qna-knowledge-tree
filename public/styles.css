@@ -133,6 +133,24 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 
 .muted { color: var(--muted); font-size: 12px; }
 
+.toast {
+  margin: 10px 12px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  background: #16203f;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 13px;
+}
+.toast.error {
+  border-color: #8a3a4b;
+  background: #3a1c2a;
+}
+.toast.ok {
+  border-color: #325e48;
+  background: #183429;
+}
+
 .mobile-tabs {
   display: none;
   position: sticky;
