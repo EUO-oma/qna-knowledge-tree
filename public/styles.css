@@ -21,6 +21,7 @@ button { cursor:pointer; }
 .type-chip { min-height:36px; padding:6px 10px; }
 .type-chip.active { border-color:#5f7cff; box-shadow:0 0 0 1px #5f7cff inset; }
 .node-btn.selected { border-color:#5f7cff; box-shadow:0 0 0 1px #5f7cff inset; background:#19264d; }
+.hit { background:#ffe08a; color:#111; border-radius:4px; padding:0 2px; }
 .muted { opacity:.75; font-size:12px; }
 .mobile-tabs { display:none; position: sticky; top: 0; z-index: 30; background:#0b1020; padding:10px; gap:8px; border-bottom:1px solid #2a3556; }
 .mobile-tabs button { flex:1; }

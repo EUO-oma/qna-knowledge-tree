@@ -78,6 +78,8 @@ async function refreshTree() {
     viewNodes = viewNodes.filter((n) => n.type === selectedType);
   }
 
+  document.getElementById("resultCount").textContent = `결과 ${viewNodes.length}개`;
+
   renderTree({
     container: document.getElementById("treeContainer"),
     nodes: viewNodes,
@@ -89,6 +91,7 @@ async function refreshTree() {
       else collapsedIds.add(nodeId);
       refreshTree();
     },
+    keyword,
     onSelect(node) {
       selectedNodeId = node.id;
       bindDetailPanel({

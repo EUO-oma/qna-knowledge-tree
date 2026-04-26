@@ -1,6 +1,6 @@
 import { getChildren } from "./nodes.service.js";
 
-export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = false, selectedNodeId = null, collapsedIds = new Set(), onToggleCollapse }) {
+export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = false, selectedNodeId = null, collapsedIds = new Set(), onToggleCollapse, keyword = "" }) {
   container.innerHTML = "";
 
   const roots = getChildren(nodes, null);
@@ -30,7 +30,7 @@ export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = f
 
     const titleBtn = document.createElement("button");
     titleBtn.className = `node-btn ${selectedNodeId === node.id ? "selected" : ""}`;
-    titleBtn.textContent = node.title;
+    titleBtn.innerHTML = highlightText(node.title, keyword);
     titleBtn.onclick = () => onSelect(node);
 
     const typeBadge = document.createElement("span");
@@ -72,4 +72,23 @@ export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = f
 
     return li;
   }
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function highlightText(text, keyword) {
+  const src = String(text || "");
+  const q = String(keyword || "").trim();
+  if (!q) return escapeHtml(src);
+
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "ig");
+  return escapeHtml(src).replace(regex, '<mark class="hit">$1</mark>');
 }
