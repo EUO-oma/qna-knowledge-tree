@@ -1,9 +1,15 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isOwner() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email == 'icandoit13579@gmail.com';
+    }
+
     match /nodes/{nodeId} {
       allow read: if true;
-      allow create, update, delete: if true;
+      allow create, update, delete: if isOwner();
     }
   }
 }
