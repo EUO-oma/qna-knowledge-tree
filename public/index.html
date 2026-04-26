@@ -16,6 +16,15 @@
       <header class="panel-header wrap">
         <h1>Knowledge Tree</h1>
         <input id="tagSearchInput" placeholder="태그 검색" />
+        <div class="type-filters" id="typeFilters">
+          <button class="type-chip active" data-type="all">전체</button>
+          <button class="type-chip" data-type="question">Q</button>
+          <button class="type-chip" data-type="answer">A</button>
+          <button class="type-chip" data-type="law">Law</button>
+          <button class="type-chip" data-type="link">Link</button>
+        </div>
+        <button id="collapseAllBtn">전체 접기</button>
+        <button id="expandAllBtn">전체 펼치기</button>
         <button id="addRootBtn">루트 노드 추가</button>
         <button id="authBtn">Google 로그인</button>
         <span id="authState" class="muted">비로그인</span>

@@ -1,6 +1,6 @@
 import { getChildren } from "./nodes.service.js";
 
-export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = false }) {
+export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = false, selectedNodeId = null, collapsedIds = new Set(), onToggleCollapse }) {
   container.innerHTML = "";
 
   const roots = getChildren(nodes, null);
@@ -29,7 +29,7 @@ export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = f
     row.style.marginLeft = `${depth * 14}px`;
 
     const titleBtn = document.createElement("button");
-    titleBtn.className = "node-btn";
+    titleBtn.className = `node-btn ${selectedNodeId === node.id ? "selected" : ""}`;
     titleBtn.textContent = node.title;
     titleBtn.onclick = () => onSelect(node);
 
@@ -39,6 +39,17 @@ export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = f
 
     const actions = document.createElement("div");
     actions.className = "node-actions";
+
+    const children = getChildren(nodes, node.id);
+    if (children.length) {
+      const toggleBtn = document.createElement("button");
+      const isCollapsed = collapsedIds.has(node.id);
+      toggleBtn.className = "toggle-btn";
+      toggleBtn.textContent = isCollapsed ? "▸" : "▾";
+      toggleBtn.title = isCollapsed ? "펼치기" : "접기";
+      toggleBtn.onclick = () => onToggleCollapse && onToggleCollapse(node.id);
+      actions.appendChild(toggleBtn);
+    }
 
     if (canEdit) {
       const addBtn = document.createElement("button");
@@ -52,8 +63,7 @@ export function renderTree({ container, nodes, onSelect, onAddChild, canEdit = f
     row.appendChild(actions);
     li.appendChild(row);
 
-    const children = getChildren(nodes, node.id);
-    if (children.length) {
+    if (children.length && !collapsedIds.has(node.id)) {
       const ul = document.createElement("ul");
       ul.className = "tree-level";
       children.forEach((child) => ul.appendChild(renderNode(child, depth + 1)));

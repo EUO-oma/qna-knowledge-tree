@@ -9,6 +9,8 @@ let selectedNodeId = null;
 let currentUser = null;
 let isOwner = false;
 let composerParentId = null;
+let selectedType = "all";
+const collapsedIds = new Set();
 
 function isMobile() {
   return window.matchMedia("(max-width: 900px)").matches;
@@ -63,7 +65,7 @@ async function refreshTree() {
   const keyword = String(document.getElementById("tagSearchInput").value || "")
     .trim()
     .toLowerCase();
-  const viewNodes = !keyword
+  let viewNodes = !keyword
     ? allNodes
     : allNodes.filter((n) =>
         [n.title, n.content, ...(n.tags || [])]
@@ -72,10 +74,21 @@ async function refreshTree() {
           .includes(keyword)
       );
 
+  if (selectedType !== "all") {
+    viewNodes = viewNodes.filter((n) => n.type === selectedType);
+  }
+
   renderTree({
     container: document.getElementById("treeContainer"),
     nodes: viewNodes,
     canEdit: isOwner,
+    selectedNodeId,
+    collapsedIds,
+    onToggleCollapse(nodeId) {
+      if (collapsedIds.has(nodeId)) collapsedIds.delete(nodeId);
+      else collapsedIds.add(nodeId);
+      refreshTree();
+    },
     onSelect(node) {
       selectedNodeId = node.id;
       bindDetailPanel({
@@ -186,6 +199,28 @@ async function bootstrap() {
   if (isMobile()) setMobileView("tree");
 
   document.getElementById("tagSearchInput").addEventListener("input", async () => {
+    await refreshTree();
+  });
+
+  document.querySelectorAll(".type-chip").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      selectedType = btn.dataset.type || "all";
+      document.querySelectorAll(".type-chip").forEach((v) => v.classList.remove("active"));
+      btn.classList.add("active");
+      await refreshTree();
+    });
+  });
+
+  document.getElementById("collapseAllBtn").addEventListener("click", async () => {
+    allNodes.forEach((n) => {
+      const hasChild = allNodes.some((c) => (c.parentId ?? null) === n.id);
+      if (hasChild) collapsedIds.add(n.id);
+    });
+    await refreshTree();
+  });
+
+  document.getElementById("expandAllBtn").addEventListener("click", async () => {
+    collapsedIds.clear();
     await refreshTree();
   });
 
