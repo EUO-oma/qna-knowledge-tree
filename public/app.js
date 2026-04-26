@@ -36,6 +36,12 @@ function parseTags(input) {
     .filter(Boolean);
 }
 
+function syncTypeChipUi() {
+  document.querySelectorAll(".type-chip").forEach((v) => {
+    v.classList.toggle("active", (v.dataset.type || "all") === selectedType);
+  });
+}
+
 function setComposerVisible(visible) {
   document.getElementById("composer").hidden = !visible;
 }
@@ -177,17 +183,27 @@ function bindComposerUi() {
     const content = document.getElementById("nodeContentInput").value;
     const tags = parseTags(document.getElementById("nodeTagsInput").value);
 
-    await createNode({
+    const parentId = composerParentId;
+    const createdRef = await createNode({
       title,
       type,
       content,
       tags,
-      parentId: composerParentId,
+      parentId,
     });
+
+    if (parentId) collapsedIds.delete(parentId);
+    selectedNodeId = createdRef?.id || null;
+
+    if (selectedType !== "all" && selectedType !== type) {
+      selectedType = "all";
+      syncTypeChipUi();
+    }
 
     setComposerVisible(false);
     clearComposer();
     await refreshTree();
+    if (isMobile()) setMobileView("detail");
   });
 }
 
@@ -208,8 +224,7 @@ async function bootstrap() {
   document.querySelectorAll(".type-chip").forEach((btn) => {
     btn.addEventListener("click", async () => {
       selectedType = btn.dataset.type || "all";
-      document.querySelectorAll(".type-chip").forEach((v) => v.classList.remove("active"));
-      btn.classList.add("active");
+      syncTypeChipUi();
       await refreshTree();
     });
   });
@@ -227,6 +242,7 @@ async function bootstrap() {
     await refreshTree();
   });
 
+  syncTypeChipUi();
   await refreshTree();
 }
 
