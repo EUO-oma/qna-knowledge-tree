@@ -1,15 +1,5 @@
 {
   "projects": {
-    "default": "euo-oma-blog"
-  },
-  "targets": {
-    "euo-oma-blog": {
-      "hosting": {
-        "qna": [
-          "qna-knowledge-tree-euo"
-        ]
-      }
-    }
-  },
-  "etags": {}
+    "default": "qna-knowledge-tree-euo"
+  }
 }

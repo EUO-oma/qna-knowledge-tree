@@ -8,12 +8,12 @@ export function initFirebase() {
   if (app && db) return { app, db };
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAjO06gbmZrl6c4oHlG4FBfVDLZktcILyY",
-    authDomain: "euo-oma-blog.firebaseapp.com",
-    projectId: "euo-oma-blog",
-    storageBucket: "euo-oma-blog.firebasestorage.app",
-    messagingSenderId: "571362546310",
-    appId: "1:571362546310:web:33aa43eb0d11a9ee243707"
+    apiKey: "AIzaSyBYIcD8yp4xby_8H1ljr0-t_UGQVjplnWo",
+    authDomain: "qna-knowledge-tree-euo-bd7c6.firebaseapp.com",
+    projectId: "qna-knowledge-tree-euo",
+    storageBucket: "qna-knowledge-tree-euo.firebasestorage.app",
+    messagingSenderId: "141218247289",
+    appId: "1:141218247289:web:4c0240fe4be5cf69e95aa8"
   };
 
   app = initializeApp(firebaseConfig);
