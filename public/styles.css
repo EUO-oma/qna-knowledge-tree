@@ -18,6 +18,9 @@ body {
   font-family: "Pretendard", "SUIT", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   background: radial-gradient(1200px 600px at 20% -10%, #1a2750 0%, var(--bg) 45%);
   color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .layout {
@@ -68,7 +71,33 @@ button:hover { border-color: var(--primary); }
 button:active { transform: translateY(1px); }
 button:disabled { opacity: .45; cursor: not-allowed; }
 
-#treeContainer, #detailPanel { padding: 12px; }
+#treeContainer, #detailPanel { padding: 14px; }
+
+#detailPanel {
+  font-size: 14px;
+}
+
+#detailPanel > div {
+  display: grid;
+  gap: 10px !important;
+}
+
+#detailPanel label {
+  display: grid;
+  gap: 6px;
+  color: #d7dff7;
+  font-size: 13px;
+}
+
+#detailPanel input,
+#detailPanel textarea,
+#detailPanel select {
+  width: 100%;
+}
+
+#detailPanel textarea {
+  line-height: 1.5;
+}
 
 .composer {
   margin: 12px;
@@ -90,6 +119,9 @@ button:disabled { opacity: .45; cursor: not-allowed; }
   text-align: left;
   min-height: 44px;
   background: #111a36;
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: .1px;
 }
 .node-btn:hover { background: #162246; }
 .node-btn.selected {
@@ -101,9 +133,9 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .node-type {
   font-size: 11px;
   opacity: .95;
-  color: #c8d2f5;
+  color: #d4ddff;
   background: #1d2a53;
-  border: 1px solid #36467a;
+  border: 1px solid #3e4f86;
   border-radius: 999px;
   padding: 4px 8px;
 }
@@ -229,7 +261,15 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 
   #treeContainer,
   #detailPanel {
-    padding: 10px;
+    padding: 12px;
+  }
+
+  #detailPanel {
+    font-size: 15px;
+  }
+
+  #detailPanel label {
+    font-size: 14px;
   }
 
   .tree-item {
